@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <!--script type="text/javascript" src=src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script-->
+
+
+</head>
+<body>
+    <div>
+        <form id="getData">
+            <div id="getLocation">
+                <label class="title">Location</label>
+                <input type="text" id="location" name="name" >
+                <input type="submit" id="submitLocation"  name="submitLocation" value="Submit">
+
+            </div>
+            <div>
+                <label class="title">Timestamp</label>
+                <input type="text" id="timestamp" name="name2" >
+            </div>
+            <input type="submit" id="submitTimestamp"  name="submitTimestamp" value="Submit">
+
+        </form>
+
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            var url="http://127.0.0.1:8002"
+
+            //---------------------------------get locations-----------------------
+
+            $.post(url,
+                {
+                  getLocations: "locations",
+                },
+                function(data,status){
+                    //console.log("--------- locations -----------\n",data)
+                    //$("#location").val(data)
+                    alert("------------------ Locations ------------------ \n " + data + "\nStatus: " + status);
+                });
+
+            //---------------------------------get timestamps-----------------------
+
+            $("#submitLocation").click(function(event) {
+                event.preventDefault();
+                if ($("#location").val() == '') {
+                    $("#location").val('location is missing');
+                }
+                else {
+
+                    var loc = $("#location").val();
+                    $.post(url,
+                        {
+                            getTimestamps: "123456789",
+                        },
+                        function (data, status) {
+                            //console.log("--------- timestamps -----------\n",data)
+                            alert("------------------ timestamps ------------------ \n " + data + "\nStatus: " + status);
+                        });
+                    }
+            });
+
+            //---------------------------------get data chanels-----------------------
+
+            $("#getData").submit(function(event){
+            event.preventDefault();
+
+            if ($("#location").val()=='') {
+                    $("#location").val('location is missing');
+                }
+                else {
+                    if ($("#timestamp").val() == '') {
+                        $("#timestamp").val('timestamp is missing');
+                    }
+                    else{
+                        var tim="1499431174";//=$("#timestamp").val();
+                        var loc="123456789";//=$("#location").val();
+                        $.post(url,
+                        {
+                          getData: "data",
+                            location:loc,
+                            timestamp:tim,
+                        },
+                        function(data,status){
+                            alert("---------- Data-------\n : " + data + "\nStatus: " + status);
+                        });
+                        }
+            }
+
+            });
+        });
+
+</script>
+
+</body>
+</html>
+
